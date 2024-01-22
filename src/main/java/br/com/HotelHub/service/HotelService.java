@@ -11,5 +11,9 @@ public interface HotelService {
 
     List<HotelDTO> hoteis();
 
-   /* Optional<HotelModel> hotelId(Long id, Long quarto_id, Long valor_id);*/
+    HotelModel atualizaDadosDoHotel(Long id, HotelModel novosDados);
+
+    void removendoHotel(Long id, Long ids);
+
+     Optional<HotelModel> hotelId(Long id);
 }

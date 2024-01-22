@@ -58,7 +58,7 @@ public class HotelController {
         return ResponseEntity.ok().body(hotel);
     }
 
-    /*@GetMapping("/hoteis/{id}/{quartoID},{valorID}")
+    @GetMapping("/hoteis/{id}")
     @Operation(summary = "Busca todos os hoteis", method = "GET")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Busca todos os hoteis"),
@@ -66,10 +66,39 @@ public class HotelController {
             @ApiResponse(responseCode = "400", description = "Parametros inválidos"),
             @ApiResponse(responseCode = "500", description = "Erro ao realizar busca dos hoteis"),
     })
-    public ResponseEntity<Optional<HotelModel>> hotelModelResponse(@PathVariable Long id, @PathVariable Long quarto_id, @PathVariable Long valor_id){
-        log.info("recebemos esses ids {}", gson.toJson(id), gson.toJson(quarto_id), gson.toJson(valor_id));
-        var hotel = hotelService.hotelId(id, quarto_id, valor_id);
+    public ResponseEntity<Optional<HotelModel>> hotelModelResponse(@PathVariable Long id){
+        log.info("recebemos esses ids {}", gson.toJson(id));
+        var hotel = hotelService.hotelId(id);
+        return ResponseEntity.ok().body(hotel);
+    }
+
+    @PutMapping("/hotel/atualiza/{id}")
+    @Operation(summary = "Busca todos os hoteis", method = "PUT")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Atualizado com sucesso"),
+            @ApiResponse(responseCode = "422", description = "Dados de requisição inválida"),
+            @ApiResponse(responseCode = "400", description = "Parametros inválidos"),
+            @ApiResponse(responseCode = "500", description = "Erro ao atualizar dados dos hoteis"),
+    })
+    public ResponseEntity<HotelModel> hotelModelResponseEntity(@PathVariable Long id, @RequestBody HotelModel novosDados){
+        var hotel = hotelService.atualizaDadosDoHotel(id,novosDados);
         log.info("Trazendo os dados dos hoteis que temos na base de dados {}", gson.toJson(hotel));
         return ResponseEntity.ok().body(hotel);
-    }*/
+    }
+
+    @DeleteMapping("/hotel/remove/{id}/{ids}")
+    @Operation(summary = "Busca todos os hoteis", method = "DELETE")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Atualizado com sucesso"),
+            @ApiResponse(responseCode = "422", description = "Dados de requisição inválida"),
+            @ApiResponse(responseCode = "400", description = "Parametros inválidos"),
+            @ApiResponse(responseCode = "500", description = "Erro ao ao remover o hotel"),
+    })
+    public ResponseEntity<HotelModel> hotelModelResponseEntity(@PathVariable Long id, @PathVariable Long ids){
+         hotelService.removendoHotel(id, ids);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+
+
 }

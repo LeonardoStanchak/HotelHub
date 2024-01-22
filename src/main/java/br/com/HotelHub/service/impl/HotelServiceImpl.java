@@ -88,14 +88,42 @@ public class HotelServiceImpl implements HotelService {
                 })
                 .collect(Collectors.toList());
     }
-/*
+
     @Override
-    public Optional<HotelModel> hotelId(Long id, Long quarto_id, Long valor_id) {
-        Optional<QuartoModel> quartoModel = quartoRepository.findById(quarto_id);
+    public HotelModel atualizaDadosDoHotel(Long id, HotelModel novosDados) {
+        Optional<HotelModel> buscandoHotel = hotelRepository.findById(id);
+
+        if (buscandoHotel.isPresent()){
+            HotelModel hotelModel = buscandoHotel.get();
+            hotelModel.setServicos(novosDados.getServicos());
+            hotelModel.setValorModel(novosDados.getValorModel());
+            hotelModel.setQuartoModel(novosDados.getQuartoModel());
+            log.info("os dados novos deixaram a classe assim {}", gson.toJson(hotelModel));
+            return hotelRepository.save(hotelModel);
+        } else {
+            throw new IllegalArgumentException("Beneficiário não encontrado com o ID: " + id);
+        }
+    }
+
+    @Override
+    public void removendoHotel(Long id, Long ids) {
+        Optional<HotelModel> hotelModel = hotelRepository.findById(id);
+
+        if (hotelModel.isPresent()){
+            quartoRepository.deleteById(ids);
+            valorRepository.deleteById(ids);
+            hotelRepository.deleteById(id);
+        }else {
+            throw new IllegalArgumentException("Beneficiário não encontrado com o ID: " + id);
+        }
+    }
+    @Override
+    public Optional<HotelModel> hotelId(Long id) {
+        /*Optional<QuartoModel> quartoModel = quartoRepository.findById(quarto_id);
         log.info("buscando os quartos pelo id do hotel {}", gson.toJson(quartoModel));
         Optional<ValorModel> valorModel = valorRepository.findById(valor_id);
-        log.info("buscando os valores pelo id do hotel {}", gson.toJson(valorModel));
+        log.info("buscando os valores pelo id do hotel {}", gson.toJson(valorModel));*/
 
-        return hotelRepository.findByQuartoModelIdAndValorModelId(quartoModel.get().getQuarto_id(), valorModel.get().getValor_id());
-    }*/
+        return hotelRepository.findById(id);
+    }
 }
